@@ -155,11 +155,11 @@ int main(){
     Plaintext co = cc->MakeCKKSPackedPlaintext(value);
     Plaintext pt = cc->MakeCKKSPackedPlaintext(x);
     auto x1 = cc->Encrypt(keys.publicKey,pt);
-    x1 = cc->EvalMult(x1,0.5);
-    x1 = cc->Rescale(x1);
+    auto temp = cc->EvalMult(x1,0.5);
+    temp = cc->Rescale(temp);
     uint32_t bs = 4;
 
-    Ciphertext<DCRTPoly> res = cc->EvalAdd(x1, bsgs(bs, degree, x1, co, cc));
+    Ciphertext<DCRTPoly> res = cc->EvalAdd(temp, bsgs(bs, degree, x1, co, cc));
     Plaintext result;
     std::cout.precision(8);
     cc->Decrypt(res, keys.secretKey, &result);
